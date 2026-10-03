@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7-FORTITUDE</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --pink:#ff8fbe;--deep:#7b3159;--cream:#fff4f8;
+    --glass:rgba(255,255,255,.72);--shadow:0 16px 40px rgba(91,35,64,.22)
+  }
+  body{
+    min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#54223d;
+    background:linear-gradient(180deg,#ffc2d9 0%,#ffb2cf 45%,#f48fb7 100%);
+    overflow-x:hidden;
+  }
+  .classroom{
+    min-height:100vh;position:relative;overflow:hidden;
+    background:
+      radial-gradient(circle at 15% 15%,rgba(255,255,255,.55),transparent 18%),
+      linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,120,170,.16));
+  }
+  .ceiling{height:30px;background:#fff0f5;border-bottom:5px solid #df78a5}
+  .board{
+    position:absolute;left:50%;top:92px;transform:translateX(-50%);
+    width:min(52vw,650px);height:170px;border:12px solid #d987a8;
+    border-radius:18px;background:#8d5370;box-shadow:var(--shadow),inset 0 0 0 5px #f5b4cc;
+  }
+  .board:before{content:"WELCOME, FORTITUDES ♡";color:#ffe8f2;font-weight:900;
+    font-size:clamp(18px,3vw,32px);letter-spacing:3px;position:absolute;inset:0;
+    display:grid;place-items:center;text-shadow:2px 2px #67364d}
+  .window{
+    position:absolute;top:72px;width:22vw;max-width:300px;height:205px;
+    background:linear-gradient(135deg,#ffd7e7,#9edcff 50%,#f7fbff);
+    border:12px solid #d477a0;border-radius:18px;box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .window:before,.window:after{content:"";position:absolute;background:#d477a0}
+  .window:before{width:10px;height:100%;left:50%;transform:translateX(-50%)}
+  .window:after{height:10px;width:100%;top:50%;transform:translateY(-50%)}
+  .window.left{left:4vw}.window.right{right:4vw}
+  .sun{position:absolute;width:60px;height:60px;border-radius:50%;background:#ffe89b;
+    top:18px;right:25px;box-shadow:0 0 25px #fff1a8}
+  .cloud{position:absolute;width:75px;height:25px;border-radius:30px;background:#fff;top:35px;left:22px;opacity:.8}
+  .cloud:before,.cloud:after{content:"";position:absolute;border-radius:50%;background:#fff}
+  .cloud:before{width:35px;height:35px;left:12px;top:-18px}.cloud:after{width:45px;height:45px;left:35px;top:-23px}
+
+  .hero{position:relative;z-index:2;text-align:center;padding:48px 20px 20px}
+  .hero h1{font-size:clamp(42px,8vw,92px);letter-spacing:8px;color:#fff;
+    text-shadow:0 7px 0 #d85d91,0 12px 28px rgba(80,25,52,.3);font-weight:1000}
+  .hero p{font-size:clamp(13px,2vw,19px);font-weight:800;color:#74304f;letter-spacing:2px}
+
+  .middle{
+    position:relative;z-index:2;width:min(90%,850px);margin:120px auto 40px;
+    display:flex;justify-content:center
+  }
+  .peak{
+    width:min(100%,700px);padding:28px 25px;border-radius:28px;
+    background:var(--glass);border:3px solid rgba(255,255,255,.8);
+    box-shadow:var(--shadow);backdrop-filter:blur(8px);text-align:center;
+    animation:float 4s ease-in-out infinite
+  }
+  .peak h2{font-size:clamp(25px,4vw,42px);color:#87365d}
+  .peak p{margin-top:9px;font-weight:700;line-height:1.6}
+
+  .nav{
+    position:relative;z-index:4;display:grid;grid-template-columns:repeat(3,1fr);
+    gap:18px;width:min(92%,900px);margin:0 auto 35px
+  }
+  .nav button,.back{
+    border:0;border-radius:22px;padding:20px 12px;background:linear-gradient(135deg,#fff,#ffd6e6);
+    color:#742d4f;font-size:clamp(15px,2.5vw,21px);font-weight:1000;
+    cursor:pointer;box-shadow:0 10px 0 #cf6d98,0 18px 30px rgba(75,20,48,.18);
+    transition:.2s transform,.2s box-shadow,.2s filter
+  }
+  .nav button:hover,.back:hover{transform:translateY(-7px) scale(1.03);filter:brightness(1.04)}
+  .nav button:active,.back:active{transform:translateY(4px);box-shadow:0 5px 0 #cf6d98}
+  .nav button:nth-child(2){background:linear-gradient(135deg,#fff4a8,#ffc9dd)}
+
+  .floor{height:125px;background:linear-gradient(180deg,#e889ad,#cf7199);
+    border-top:9px solid #b65b83;position:relative}
+  .floor:before{content:"";position:absolute;inset:20px 0 0;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 4px,transparent 4px 85px);opacity:.5}
+
+  .screen{display:none;position:fixed;inset:0;z-index:20;overflow:auto;
+    background:linear-gradient(180deg,#ffd1e2,#ff9fc4)}
+  .screen.active{display:block;animation:fade .35s ease}
+  .screen-inner{width:min(94%,1050px);margin:0 auto;padding:35px 0 60px}
+  .screen-title{text-align:center;font-size:clamp(35px,7vw,65px);color:#fff;
+    text-shadow:0 5px 0 #cc648e;margin:12px 0 28px;font-weight:1000}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
+  .card{
+    background:rgba(255,255,255,.85);border:3px solid #fff;border-radius:24px;
+    padding:22px;box-shadow:var(--shadow);transition:.25s
+  }
+  .card:hover{transform:translateY(-6px) rotate(-.5deg)}
+  .card h3{color:#87365d;font-size:22px;margin-bottom:8px}
+  .card .role{font-weight:900;color:#d35489;margin-bottom:12px}
+  .card p{line-height:1.5;font-weight:600;font-size:14px}
+  .back{display:block;width:min(300px,90%);margin:32px auto 0;padding:15px}
+  .teacher-room{text-align:center;min-height:100vh;position:relative;overflow:hidden}
+  .teacher-name{font-size:clamp(55px,12vw,120px);font-weight:1000;color:#fff;
+    text-shadow:0 7px 0 #ce5c8e,0 15px 35px rgba(90,25,55,.3);
+    animation:pop 1s cubic-bezier(.2,1.5,.4,1)}
+  .teacher-sub{font-size:22px;font-weight:900;color:#7b3159;margin-top:8px}
+  .confetti{position:absolute;inset:0;pointer-events:none}
+  .piece{position:absolute;top:-30px;width:11px;height:19px;animation:fall 5s linear forwards}
+  .teacher-back{display:none}
+  .teacher-back.show{display:block}
+  .tiny{font-size:13px;opacity:.75;margin-top:20px;text-align:center}
+
+  @keyframes float{50%{transform:translateY(-10px)}}
+  @keyframes fade{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+  @keyframes pop{0%{transform:scale(.2);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+  @keyframes fall{to{transform:translate3d(var(--x),110vh,0) rotate(720deg);opacity:0}}
+  @media(max-width:700px){
+    .board{top:105px;width:48vw;height:120px}.window{height:150px;top:68px;width:25vw}
+    .hero{padding-top:30px}.middle{margin-top:100px}
+    .nav{gap:10px}.nav button{padding:16px 6px;border-radius:17px}
+    .floor{height:100px}
+  }
+</style>
+</head>
+<body>
+<div class="classroom" id="lobby">
+  <div class="ceiling"></div>
+  <div class="window left"><div class="sun"></div><div class="cloud"></div></div>
+  <div class="window right"><div class="sun"></div><div class="cloud"></div></div>
+  <div class="board"></div>
+
+  <header class="hero">
+    <h1>7-FORTITUDE</h1>
+    <p>ONE SECTION • ONE FAMILY • ONE FORTITUDE</p>
+  </header>
+
+  <main>
+    <section class="middle">
+      <div class="peak">
+        <h2>THE PEAKEST SECTION ♡</h2>
+        <p>Welcome to the 7-Fortitude classroom! Explore our officers, meet our teacher, and discover the subjects that make our section special.</p>
+      </div>
+    </section>
+
+    <nav class="nav">
+      <button onclick="openScreen('officers')">👥 OFFICERS</button>
+      <button onclick="openTeacher()">👩‍🏫 TEACHER</button>
+      <button onclick="openScreen('subjects')">📚 SUBJECTS</button>
+    </nav>
+  </main>
+  <div class="floor"></div>
+</div>
+
+<section class="screen" id="officers">
+  <div class="screen-inner">
+    <h2 class="screen-title">CLASSROOM OFFICERS</h2>
+    <div class="grid">
+      <article class="card"><h3>Caitlyn</h3><div class="role">President</div><p>Leads the section, helps organize activities, and represents the class.</p></article>
+      <article class="card"><h3>Neri</h3><div class="role">Vice President</div><p>Supports the president and helps coordinate class plans and activities.</p></article>
+      <article class="card"><h3>Jhex</h3><div class="role">Secretary</div><p>Keeps important notes, records, announcements, and class information organized.</p></article>
+      <article class="card"><h3>Andi</h3><div class="role">Assistant Secretary</div><p>Assists the secretary with records, notes, and other class documentation.</p></article>
+      <article class="card"><h3>Audree</h3><div class="role">PIO 1</div><p>Helps share announcements and important information with classmates.</p></article>
+      <article class="card"><h3>Moanna</h3><div class="role">PIO 2</div><p>Supports class communication and helps make sure announcements reach everyone.</p></article>
+      <article class="card"><h3>Aj</h3><div class="role">Treasurer</div><p>Helps keep track of class funds and records money-related activities.</p></article>
+      <article class="card"><h3>Andrew</h3><div class="role">Auditor</div><p>Checks and reviews financial records to help keep class funds properly documented.</p></article>
+      <article class="card"><h3>Aiyana</h3><div class="role">Muse</div><p>Represents the section in activities and helps bring school events to life.</p></article>
+      <article class="card"><h3>Cholo</h3><div class="role">Escort</div><p>Represents and supports the section during school programs and activities.</p></article>
+    </div>
+    <button class="back" onclick="closeScreens()">← BACK TO LOBBY</button>
+  </div>
+</section>
+
+<section class="screen" id="subjects">
+  <div class="screen-inner">
+    <h2 class="screen-title">OUR SUBJECTS</h2>
+    <div class="grid">
+      <article class="card"><h3>🇵🇭 Filipino</h3><p>Paglinang ng kasanayan sa pagbasa, pagsulat, pakikinig, pagsasalita, at pag-unawa sa wikang Filipino.</p></article>
+      <article class="card"><h3>🛠️ TLE</h3><p>Practical skills, technology, livelihood concepts, and responsible use of tools and resources.</p></article>
+      <article class="card"><h3>💻 Computer</h3><p>Learning digital skills, computer concepts, productivity tools, and responsible technology use.</p></article>
+      <article class="card"><h3>💗 Values</h3><p>Explores good character, responsibility, respect, decision-making, and positive relationships.</p></article>
+      <article class="card"><h3>🔬 Science</h3><p>Studies the natural world through observation, evidence, experiments, and scientific reasoning.</p></article>
+      <article class="card"><h3>🎨 MAPEH</h3><p>Covers Music, Arts, Physical Education, and Health through creative and active learning.</p></article>
+      <article class="card"><h3>🌏 AP</h3><p>Araling Panlipunan explores people, places, history, culture, society, and citizenship.</p></article>
+      <article class="card"><h3>➗ Math</h3><p>Builds skills in numbers, patterns, measurement, geometry, problem-solving, and logical thinking.</p></article>
+      <article class="card"><h3>📖 English</h3><p>Develops communication, reading, writing, vocabulary, grammar, and comprehension skills.</p></article>
+    </div>
+    <button class="back" onclick="closeScreens()">← BACK TO LOBBY</button>
+  </div>
+</section>
+
+<section class="screen teacher-room" id="teacher">
+  <div class="confetti" id="confetti"></div>
+  <div class="screen-inner">
+    <div style="padding-top:13vh">
+      <div class="teacher-name">Ma'am Ria</div>
+      <div class="teacher-sub">WELCOME TO THE TEACHER'S ROOM! 🎉</div>
+      <p class="tiny">The celebration lasts for 5 seconds.</p>
+      <button class="back teacher-back" id="teacherBack" onclick="closeScreens()">← EXIT TO LOBBY</button>
+    </div>
+  </div>
+</section>
+
+<script>
+function openScreen(id){
+  closeScreens();
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function closeScreens(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+}
+function openTeacher(){
+  closeScreens();
+  const room=document.getElementById('teacher');
+  const confetti=document.getElementById('confetti');
+  const back=document.getElementById('teacherBack');
+  confetti.innerHTML='';
+  back.classList.remove('show');
+  room.classList.add('active');
+  for(let i=0;i<110;i++){
+    const p=document.createElement('span');
+    p.className='piece';
+    p.style.left=Math.random()*100+'%';
+    p.style.setProperty('--x',(Math.random()*260-130)+'px');
+    p.style.animationDelay=(Math.random()*1.2)+'s';
+    p.style.background=['#ff4f9a','#ffd84d','#70d6ff','#8ee28e','#b58cff','#ffffff'][Math.floor(Math.random()*6)];
+    p.style.transform='rotate('+Math.random()*360+'deg)';
+    confetti.appendChild(p);
+  }
+  setTimeout(()=>back.classList.add('show'),5000);
+}
+</script>
+</body>
+</html>
